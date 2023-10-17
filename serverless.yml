@@ -1,1 +1,14 @@
-# your code here
+service: question-service-serverless
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ap-southeast-1
+
+functions:
+  hello:
+    handler: src/handler.hello
+
+plugins:
+  - serverless-plugin-typescript
