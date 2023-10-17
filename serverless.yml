@@ -8,7 +8,7 @@ provider:
 
 functions:
   hello:
-    handler: src/handler.hello
+    handler: src/handler.updateQuestionDatabase
 
 plugins:
   - serverless-plugin-typescript
