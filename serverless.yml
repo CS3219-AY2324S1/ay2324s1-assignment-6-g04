@@ -1,14 +1,17 @@
 service: question-service-serverless
 frameworkVersion: '3'
 
+useDotenv: true
+
 provider:
   name: aws
   runtime: nodejs18.x
   region: ap-southeast-1
 
 functions:
-  hello:
+  updateQuestionDatabase:
     handler: src/handler.updateQuestionDatabase
 
 plugins:
   - serverless-plugin-typescript
+  - serverless-dotenv-plugin

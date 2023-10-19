@@ -1,40 +1,59 @@
-export const fetchLeetCodeQuestions = async () => {
-    try {
-        const graphqlEndpoint = 'https://leetcode.com/graphql';
+import { IGraphQlQuestion, IGraphQLResponse } from '../interface/serverless.interface';
+import striptags = require('striptags');
+import he = require('he');
 
-        // GraphQL query to fetch all questions from LeetCode API with the following fields:
-        const graphqlQuery = `
-          query {
-            allQuestions {
-              questionId
-              title
-              titleSlug
-              difficulty
-              topicTags {
-                name
-              }
-              content
-              paidOnly: isPaidOnly
-            }
-          }
-        `;
+export class QuestionFetcher {
 
+  private readonly _graphqlEndpoint: string;
+  private readonly _graphqlQuery: string;
 
-        const data = await fetch(graphqlEndpoint, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({query: graphqlQuery}),
+  public constructor(graphqlEndpoint: string, graphqlQuery: string) {
+    this._graphqlEndpoint = graphqlEndpoint;
+    this._graphqlQuery = graphqlQuery;
+  }
 
-        })
+  /**
+   * Fetches questions from the LeetCode API.
+   * @returns - The response from the LeetCode API.
+   */
+  public async fetchLeetCodeQuestions(): Promise<IGraphQlQuestion[]> {
+    const data = await fetch(this._graphqlEndpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ query: this._graphqlQuery })
+    });
 
-        if (data.status !== 200) {
-            throw new Error(`Error fetching questions from LeetCode API. Response Code: ${data.status}`);
-        }
-    } catch (error) {
-        console.log(error);
-        throw new Error('Error fetching questions from LeetCode API');
+    if (data.status !== 200) {
+      throw new Error(`Error fetching questions from LeetCode API. Response Code: ${data.status}`);
     }
-};
+
+    const response: IGraphQLResponse = await data.json() as IGraphQLResponse;
+
+    return this._handleData(response);
+  };
+
+  private _handleData(data: IGraphQLResponse) {
+    const dataArray: Array<IGraphQlQuestion> = data.data.allQuestions;
+
+    // filter out paid questions
+    const filteredArray = dataArray.filter((question) => {
+      return question.paidOnly === false;
+    });
+
+    filteredArray.forEach((question) => {
+      question.content = this._stripTags(question.content);
+    });
+
+    return filteredArray;
+  }
+
+  private _stripTags(html: string) {
+    const strippedText = striptags(html);
+    return he.decode(strippedText);
+  }
+}
+
+
 

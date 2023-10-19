@@ -6,5 +6,8 @@ jspm_packages
 # Serverless directories
 .serverless
 
+# Environment files
+.env
+
 # IDE directories
 .idea
