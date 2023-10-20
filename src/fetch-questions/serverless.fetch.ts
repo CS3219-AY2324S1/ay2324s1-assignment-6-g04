@@ -1,3 +1,7 @@
+/**
+ * @file Fetches question data from LeetCode GraphQL API.
+ * @author Irving de Boer
+ */
 import { IGraphQlQuestion, IGraphQLResponse } from '../interface/serverless.interface';
 import striptags = require('striptags');
 import he = require('he');

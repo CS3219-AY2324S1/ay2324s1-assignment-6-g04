@@ -1,3 +1,7 @@
+/**
+ * @file Defines constant variables used.
+ * @author Irving de Boer
+ */
 import * as dotenv from 'dotenv';
 
 dotenv.config();

@@ -1,3 +1,7 @@
+/**
+ * @file Interfaces used.
+ * @author Irving de Boer
+ */
 import { Document } from 'mongoose';
 
 export interface IQuestion extends Document {

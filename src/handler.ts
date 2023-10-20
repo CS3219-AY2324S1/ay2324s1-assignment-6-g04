@@ -1,3 +1,7 @@
+/**
+ * @file AWS Lambda function handler.
+ * @author Irving de Boer
+ */
 import { QuestionFetcher } from './fetch-questions/serverless.fetch';
 import { GRAPHQL_ENDPOINT, GRAPHQL_QUERY, MONGO_URI } from './constants/serverless.constants';
 import mongoose from 'mongoose';
@@ -10,22 +14,18 @@ export async function updateQuestionDatabase(event: any, context: any) {
     await mongoose.connect(MONGO_URI!, {
       // and tell the MongoDB driver to not wait more than 5 seconds
       // before error if it isn't connected
-      serverSelectionTimeoutMS: 5000,
-      dbName: 'questions'
+      serverSelectionTimeoutMS: 5000
     });
 
     const questionService = new QuestionService();
     const questionFetcher = new QuestionFetcher(GRAPHQL_ENDPOINT, GRAPHQL_QUERY);
     const data = await questionFetcher.fetchLeetCodeQuestions();
-    
-    questionService.updateDatabase(data);
 
-    await mongoose.disconnect();
+    await questionService.updateDatabase(data);
     return {
       message: data
     };
   } catch (error) {
-    await mongoose.disconnect();
     return {
       message: error
     };

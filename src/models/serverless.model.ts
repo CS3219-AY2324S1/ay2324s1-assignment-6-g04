@@ -1,3 +1,7 @@
+/**
+ * @file Defines type interfaces used within question service API.
+ * @author Irving de Boer
+ */
 import { model, Schema } from 'mongoose';
 
 import { IQuestion } from '../interface/serverless.interface';
