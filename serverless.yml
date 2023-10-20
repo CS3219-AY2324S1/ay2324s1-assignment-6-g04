@@ -11,7 +11,8 @@ provider:
 functions:
   updateQuestionDatabase:
     handler: src/handler.updateQuestionDatabase
-
+    events:
+      - schedule: rate(30 days)
 plugins:
   - serverless-plugin-typescript
   - serverless-dotenv-plugin
