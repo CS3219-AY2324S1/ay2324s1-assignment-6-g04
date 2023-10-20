@@ -1,39 +1,33 @@
 import { QuestionFetcher } from './fetch-questions/serverless.fetch';
 import { GRAPHQL_ENDPOINT, GRAPHQL_QUERY, MONGO_URI } from './constants/serverless.constants';
 import mongoose from 'mongoose';
-
-let conn = null;
+import { QuestionService } from './database/serverless.database';
 
 export async function updateQuestionDatabase(event: any, context: any) {
 
   context.callbackWaitsForEmptyEventLoop = false;
-  if (conn == null) {
-    try {
-      conn = mongoose.createConnection(MONGO_URI, {
-        // and tell the MongoDB driver to not wait more than 5 seconds
-        // before error if it isn't connected
-        serverSelectionTimeoutMS: 5000
-      });
-
-      // `await`ing connection after assigning to the `conn` variable
-      // to avoid multiple function calls creating new connections
-      await conn.asPromise();
-    } catch (error) {
-      return {
-        message: 'Error connecting to database'
-      };
-    }
-  }
-
   try {
+    await mongoose.connect(MONGO_URI!, {
+      // and tell the MongoDB driver to not wait more than 5 seconds
+      // before error if it isn't connected
+      serverSelectionTimeoutMS: 5000,
+      dbName: 'questions'
+    });
+
+    const questionService = new QuestionService();
     const questionFetcher = new QuestionFetcher(GRAPHQL_ENDPOINT, GRAPHQL_QUERY);
     const data = await questionFetcher.fetchLeetCodeQuestions();
+    
+    questionService.updateDatabase(data);
+
+    await mongoose.disconnect();
     return {
-      message: 'Successfully scraped questions from LeetCode API'
+      message: data
     };
   } catch (error) {
+    await mongoose.disconnect();
     return {
-      message: 'Error fetching questions from LeetCode API'
+      message: error
     };
   }
 
