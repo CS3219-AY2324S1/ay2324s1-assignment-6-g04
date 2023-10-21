@@ -7,7 +7,7 @@ import { IGraphQlQuestion, IQuestion } from '../interface/serverless.interface';
 import mongoose from 'mongoose';
 
 export class QuestionService {
-  
+
   /**
    * Updates the database with the questions from LeetCode.
    * @param questions - The questions to update the database with.
@@ -33,6 +33,13 @@ export class QuestionService {
         description: question.content,
         categories: question.topicTags.map((tag) => tag.name),
         complexity: question.difficulty,
+        template: question.codeSnippets.map((snippet) => {
+          return {
+            language: snippet.lang,
+            langSlug: snippet.langSlug,
+            code: snippet.code
+          };
+        }),
         deleted: false,
         deletedAt: null
       };
