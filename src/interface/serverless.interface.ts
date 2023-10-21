@@ -11,6 +11,13 @@ export interface IQuestion extends Document {
   description: string;
   categories: Array<string>;
   complexity: string;
+  template: [
+    {
+      language: string;
+      langSlug: string;
+      code: string;
+    }
+  ];
   deleted: boolean;
   deletedAt: Date;
 }
@@ -31,5 +38,12 @@ export interface IGraphQlQuestion {
     }
   ];
   content: string;
+  codeSnippets: [
+    {
+      lang: string;
+      langSlug: string;
+      code: string;
+    }
+  ];
   paidOnly: boolean;
 }

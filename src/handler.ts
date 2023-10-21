@@ -23,11 +23,12 @@ export async function updateQuestionDatabase(event: any, context: any) {
 
     await questionService.updateDatabase(data);
     return {
-      message: data
+      message: 'Successfully updated the database.'
     };
   } catch (error) {
+    await mongoose.connection.close();
     return {
-      message: error
+      message: `Error: ${error}`
     };
   }
 
