@@ -4,7 +4,6 @@
  */
 import { question } from '../models/serverless.model';
 import { IGraphQlQuestion, IQuestion } from '../interface/serverless.interface';
-import mongoose from 'mongoose';
 
 export class QuestionService {
 
@@ -18,9 +17,8 @@ export class QuestionService {
       for (const data of formattedQuestions) {
         await question.findOneAndUpdate({ title: data.title }, { $set: data }, { upsert: true });
       }
-      await mongoose.connection.close();
     } catch (error) {
-      throw new Error(`Error updating database: ${error}`);
+      throw new Error(`${error}`);
     }
   }
 

@@ -84,6 +84,12 @@ To deploy the serverless functions, run the following command:
 serverless deploy
 ```
 
+To invoke the serverless functions, run the following command:
+
+```bash
+serverless invoke --function updateQuestionDatabase
+```
+
 The serverless functions is scheduled to run every 24 hours and can be monitored via the AWS Lambda console.
 
 ## Local Deployment
