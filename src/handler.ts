@@ -28,7 +28,7 @@ export async function updateQuestionDatabase(event: any, context: any) {
   } catch (error) {
     await mongoose.connection.close();
     return {
-      message: `Error: ${error}`
+      message: `${error}`
     };
   }
 
