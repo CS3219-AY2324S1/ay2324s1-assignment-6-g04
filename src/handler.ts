@@ -26,9 +26,11 @@ export async function updateQuestionDatabase(event: any, context: any) {
       message: 'Successfully updated the database.'
     };
   } catch (error) {
-    await mongoose.connection.close();
+
+    await mongoose.connection.close(true);
+
     return {
-      message: `Error: ${error}`
+      message: `${error}`
     };
   }
 
