@@ -9,6 +9,12 @@ import { QuestionService } from './database/serverless.database';
 
 let cachedDb: any = null;
 
+/**
+ * AWS Lambda function handler.
+ * @param event - The event object.
+ * @param context - The context object.
+ * @returns - The response object.
+ */
 export async function updateQuestionDatabase(event: any, context: any) {
 
   context.callbackWaitsForEmptyEventLoop = false;
@@ -33,7 +39,7 @@ export async function updateQuestionDatabase(event: any, context: any) {
   } catch (error) {
 
     return {
-      message: `${error}`
+      message: `${error.message}`
     };
   }
 
