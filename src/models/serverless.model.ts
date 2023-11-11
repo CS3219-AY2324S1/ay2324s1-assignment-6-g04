@@ -11,13 +11,6 @@ const questionModel = new Schema({
   description: { type: String, required: [true, 'Field is required'] },
   categories: { type: Array<string>, required: [true, 'Field is required'] },
   complexity: { type: String, required: [true, 'Field is required'] },
-  template: [
-    {
-      language: { type: String, required: [true, 'Field is required'] },
-      langSlug: { type: String, required: [true, 'Field is required'] },
-      code: { type: String, required: [true, 'Field is required'] }
-    }
-  ],
   deleted: { type: Boolean, default: false, required: [true, 'Field is required'] },
   deletedAt: { type: Date, default: null }
 });

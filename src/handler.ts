@@ -22,7 +22,7 @@ export async function updateQuestionDatabase(event: any, context: any) {
 
     if (!cachedDb) {
       cachedDb = await mongoose.connect(MONGO_URI!, {
-        // and tell the MongoDB driver to not wait more than 5 seconds
+        // tell the MongoDB driver to not wait more than 5 seconds
         // before error if it isn't connected
         serverSelectionTimeoutMS: 5000
       });
@@ -37,7 +37,7 @@ export async function updateQuestionDatabase(event: any, context: any) {
       message: 'Successfully updated the database.'
     };
   } catch (error) {
-
+    await mongoose.connection.close();
     return {
       message: `${error.message}`
     };

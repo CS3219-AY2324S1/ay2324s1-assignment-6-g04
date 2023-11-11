@@ -24,14 +24,13 @@ export class QuestionFetcher {
     const data = await fetch(this._graphqlEndpoint, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'User-Agent': 'Mozilla/5.0'
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({ query: this._graphqlQuery })
     });
 
     if (data.status !== 200) {
-      throw new Error(`Error fetching questions from LeetCode API. Response Code: ${data.status}`);
+      throw new Error(`Error fetching questions from LeetCode API. Response Message: ${JSON.stringify(data)}`);
     }
 
     const response: IGraphQLResponse = await data.json() as IGraphQLResponse;

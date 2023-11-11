@@ -4,6 +4,7 @@
  */
 import { question } from '../models/serverless.model';
 import { IGraphQlQuestion, IQuestion } from '../interface/serverless.interface';
+import mongoose from 'mongoose';
 
 export class QuestionService {
 
@@ -17,6 +18,7 @@ export class QuestionService {
       for (const data of formattedQuestions) {
         await question.findOneAndUpdate({ title: data.title }, { $set: data }, { upsert: true });
       }
+      await mongoose.connection.close();
     } catch (error) {
       throw new Error(`${error}`);
     }
@@ -31,13 +33,6 @@ export class QuestionService {
         description: question.content,
         categories: question.topicTags.map((tag) => tag.name),
         complexity: question.difficulty,
-        template: question.codeSnippets.map((snippet) => {
-          return {
-            language: snippet.lang,
-            langSlug: snippet.langSlug,
-            code: snippet.code
-          };
-        }),
         deleted: false,
         deletedAt: null
       };
