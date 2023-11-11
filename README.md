@@ -36,11 +36,6 @@ query {
          name
       }
       content
-      codeSnippets {
-        lang
-        langSlug
-         code
-      }
       paidOnly: isPaidOnly
      }
    }
@@ -54,10 +49,6 @@ This returns an array of questions. Each question has the following fields:
 - topicTags - The topic tags of the question.
     - name - The name of the topic tag.
 - content - The content of the question.
-- codeSnippets - The code snippets of the question.
-    - lang - The language of the code snippet.
-    - langSlug - The language slug of the code snippet.
-    - code - The code of the code snippet.
 - paidOnly - Whether the question is paid only.
 
 ### Potential Issues
@@ -109,6 +100,21 @@ questions from LeetCode.
 
 The question repository is a MongoDB database that stores the questions retrieved from LeetCode. The question repository
 is hosted on MongoDB Atlas by default.
+
+### Schema
+
+The question repository has the following schema:
+
+```typescript
+interface Question {
+  questionId: number;
+  title: string;
+  difficulty: string;
+  topicTags: string[];
+  content: string;
+  paidOnly: boolean;
+}
+```
 
 ## Demonstration
 
