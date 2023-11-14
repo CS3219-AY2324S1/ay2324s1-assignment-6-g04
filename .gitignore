@@ -1,0 +1,14 @@
+# package directories
+.build
+node_modules
+jspm_packages
+
+# Serverless directories
+.serverless
+
+# Environment files
+*.env
+*.env.*
+
+# IDE directories
+.idea
